@@ -2,6 +2,7 @@ package dev.onyx.codegen.http;
 
 import javafx.util.Pair;
 
+import java.io.BufferedReader;
 import java.io.ObjectInputStream;
 import java.util.List;
 
@@ -15,9 +16,9 @@ public class ApiResponse<T>
     private List<Pair<String, String>> headers;
     
 
-    public ApiResponse(ObjectInputStream response)
+    public ApiResponse(BufferedReader response)
     {
-
+        System.out.print(response);
     }
 
     public int getStatusCode()

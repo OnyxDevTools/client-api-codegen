@@ -1,10 +1,18 @@
 package dev.onyx.codegen.http;
 
-public interface IHttpRestClient<T>
+import javafx.util.Pair;
+
+import java.util.List;
+
+public interface IHttpRestClient
 {
-    ApiResponse<T> executeGET(RestClientConfig config,
-                              String resourcePath,
-                              Class desiredResponseType,
-                              int expectedSuccessStatusCode) throws ApiClientException;
+    ApiResponse<?> execute(
+                            String requestMethod,
+                            RestClientConfig config,
+                            String resourcePath,
+                            Class desiredResponseType,
+                            int expectedSuccessStatusCode,
+                            List<Pair<String, String>> headers
+    ) throws ApiClientException;
 
 }

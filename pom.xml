@@ -107,6 +107,13 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.4.1</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -179,13 +186,15 @@
               <goal>descriptor</goal>
             </goals>
           </execution>
-<!--          <execution>-->
-<!--            <id>help-goal</id>-->
-<!--            <goals>-->
-<!--              <goal>helpmojo</goal>-->
-<!--            </goals>-->
-<!--          </execution>-->
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>8</source>
+          <target>8</target>
+        </configuration>
       </plugin>
     </plugins>
       <resources>

@@ -6,6 +6,8 @@ public class RestClientConfig
 {
     private LinkedHashSet<IRequestInterceptor> requestInterceptors = new LinkedHashSet<>();
 
+    private LinkedHashSet<IResponseInterceptor> responseInterceptors = new LinkedHashSet<>();
+
     private String protocol;
 
     private String host;
@@ -25,16 +27,21 @@ public class RestClientConfig
         return this;
     }
 
+    public RestClientConfig addResponseInterceptor(IResponseInterceptor interceptor)
+    {
+        responseInterceptors.add(interceptor);
+
+        return this;
+    }
+
     public LinkedHashSet<IRequestInterceptor> getRequestInterceptors()
     {
         return requestInterceptors;
     }
 
-    public RestClientConfig requestInterceptors(LinkedHashSet<IRequestInterceptor> requestInterceptors)
+    public LinkedHashSet<IResponseInterceptor> getResponseInterceptors()
     {
-        this.requestInterceptors = requestInterceptors;
-
-        return this;
+        return responseInterceptors;
     }
 
     public String getBaseUrl()
@@ -127,5 +134,4 @@ public class RestClientConfig
 
         return this;
     }
-
 }

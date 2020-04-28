@@ -28,13 +28,7 @@ public class ApiClientGenerator extends MavenProjectGenerator
         super.generate();
         createPom();
         latestSpec = SwaggerUtils.convertToLatestSpec(spec, generateLatestSpecFile);
-        mapLatestSpecToClientModel();
-    }
-
-    private void mapLatestSpecToClientModel()
-    {
-        Class clazz = new Class();
-
+        // to do
     }
 
     private void createPom() throws IOException

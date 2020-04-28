@@ -6,6 +6,11 @@ public class ApiClientException extends Exception
 {
     private static final String MESSAGE_PATTERN = "An Exception occurred when calling {0} '{1}': {2}";
 
+    public ApiClientException(final String message)
+    {
+        super(message);
+    }
+
     public ApiClientException(final String httpMethod, final String endpoint, final String message, Throwable cause)
     {
         super(MessageFormat.format(MESSAGE_PATTERN, httpMethod, endpoint, message), cause);
