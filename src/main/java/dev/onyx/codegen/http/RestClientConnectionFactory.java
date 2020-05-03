@@ -1,6 +1,6 @@
 package dev.onyx.codegen.http;
 
-import javafx.util.Pair;
+import dev.onyx.codegen.models.Pair;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

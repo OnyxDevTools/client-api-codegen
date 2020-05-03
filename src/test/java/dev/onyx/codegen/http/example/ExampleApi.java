@@ -1,9 +1,14 @@
 package dev.onyx.codegen.http.example;
 
 import dev.onyx.codegen.http.*;
-import javafx.util.Pair;
+import dev.onyx.codegen.models.Pair;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 
 /**
  * this file is an example of the generated output
@@ -21,27 +26,57 @@ public class ExampleApi
         this.config = config;
     }
 
-    public ApiResponse<Example> getExampleResponseById(final String id, final List<Pair<String, String>> headers) throws ApiClientException
+    public CompletableFuture<ApiResponse<Example>> getExampleResponseById(final String id, final List<Pair<String, String>> headers)
     {
-        return (ApiResponse<Example>) restClient.execute(
+        return restClient.execute(
                 "GET",
                 config,
                 "example/{id}",
-                Example.class,
                 200,
                 headers
         );
+
     }
 
-    public Example getExampleById(final String id) throws ApiClientException
-    {
-        return getExampleById(id, null);
+    public Example getExampleById(final String id) throws ApiClientException {
+        CompletableFuture<Example> response = asyncGetExampleById(id, null);
+        try {
+            return response.get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new ApiClientException(e.getMessage());
+        }
     }
+
 
     public Example getExampleById(final String id, final List<Pair<String, String>> headers) throws ApiClientException
     {
-        ApiResponse<Example> response =  getExampleResponseById(id,  headers);
+        CompletableFuture<Example> response = asyncGetExampleById(id,  headers);
+        try {
+            return response.get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new ApiClientException(e.getMessage());
+        }
+    }
 
-        return (response != null) ? response.getBody() : null;
+    public CompletableFuture<Example> asyncGetExampleById(final String id, final List<Pair<String, String>> headers)
+    {
+        final CompletableFuture<Example> future = new CompletableFuture<>();
+
+        CompletableFuture<ApiResponse<Example>> response =  getExampleResponseById(id,  headers);
+        response.thenAccept(new Consumer<ApiResponse<Example>>() {
+            @Override
+            public void accept(ApiResponse<Example> exampleApiResponse) {
+                future.complete(exampleApiResponse.getBody());
+            }
+        }).exceptionally(new Function<Throwable, Void>() {
+            @Override
+            public Void apply(Throwable throwable) {
+                future.completeExceptionally(throwable);
+                return null;
+            }
+        });
+
+
+        return future;
     }
 }

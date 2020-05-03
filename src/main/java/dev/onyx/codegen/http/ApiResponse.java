@@ -1,9 +1,8 @@
 package dev.onyx.codegen.http;
 
-import javafx.util.Pair;
+import dev.onyx.codegen.models.Pair;
 
 import java.io.BufferedReader;
-import java.io.ObjectInputStream;
 import java.util.List;
 
 public class ApiResponse<T>

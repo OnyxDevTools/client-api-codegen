@@ -1,18 +1,18 @@
 package dev.onyx.codegen.http;
 
-import javafx.util.Pair;
+
+import dev.onyx.codegen.models.Pair;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public interface IHttpRestClient
 {
-    ApiResponse<?> execute(
-                            String requestMethod,
-                            RestClientConfig config,
-                            String resourcePath,
-                            Class desiredResponseType,
-                            int expectedSuccessStatusCode,
-                            List<Pair<String, String>> headers
-    ) throws ApiClientException;
+    <T> CompletableFuture<ApiResponse<T>> execute(String requestMethod,
+                                              RestClientConfig config,
+                                              String resourcePath,
+                                              int expectedSuccessStatusCode,
+                                              List<Pair<String, String>> headers);
+
 
 }

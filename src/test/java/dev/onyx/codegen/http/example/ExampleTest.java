@@ -9,8 +9,7 @@ import org.junit.Test;
 public class ExampleTest
 {
     @Test
-    public void exampleUsage() throws ApiClientException
-    {
+    public void exampleUsage() throws ApiClientException {
         final ApiClient client = new ApiClient();
 
         final IRequestInterceptor auth = new BasicAuthRequestInterceptor("username", "password");
@@ -22,8 +21,9 @@ public class ExampleTest
                 .connectionTimeoutMs(3000)
                 .addRequestInterceptor(auth);
 
-        final Example exampleModel = client.exampleApi().getExampleById("id");
+        final Example example = client.exampleApi().getExampleById("id");
 
-        Assertions.assertThat(exampleModel).isNotNull();
+        Assertions.assertThat(example).isNotNull();
+
     }
 }
