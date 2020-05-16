@@ -1,8 +1,9 @@
 package dev.onyx.codegen.http.example;
 
 import dev.onyx.codegen.http.*;
-import dev.onyx.codegen.models.Pair;
+import dev.onyx.codegen.models.HttpHeader;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -26,16 +27,11 @@ public class ExampleApi
         this.config = config;
     }
 
-    public CompletableFuture<ApiResponse<Example>> getExampleResponseById(final String id, final List<Pair<String, String>> headers)
+    public ApiResponse<Example> getExampleResponseById(final String id, final List<HttpHeader> headers)
     {
-        return restClient.execute(
-                "GET",
-                config,
-                "example/{id}",
-                200,
-                headers
-        );
-
+        return restClient.request(MessageFormat.format("example/{0}",id))
+                .headers(headers)
+                .get();
     }
 
     public Example getExampleById(final String id) throws ApiClientException {
@@ -48,7 +44,7 @@ public class ExampleApi
     }
 
 
-    public Example getExampleById(final String id, final List<Pair<String, String>> headers) throws ApiClientException
+    public Example getExampleById(final String id, final List<HttpHeader> headers) throws ApiClientException
     {
         CompletableFuture<Example> response = asyncGetExampleById(id,  headers);
         try {
@@ -58,7 +54,7 @@ public class ExampleApi
         }
     }
 
-    public CompletableFuture<Example> asyncGetExampleById(final String id, final List<Pair<String, String>> headers)
+    public CompletableFuture<Example> asyncGetExampleById(final String id, final List<HttpHeader> headers)
     {
         final CompletableFuture<Example> future = new CompletableFuture<>();
 

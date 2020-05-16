@@ -1,6 +1,6 @@
 package dev.onyx.codegen.http;
 
-import dev.onyx.codegen.models.Pair;
+import dev.onyx.codegen.models.HttpHeader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,17 +15,28 @@ public class RestClient implements IHttpRestClient
 
     private HttpURLConnectionPool connectionPool = null;
 
+    private RestClientConfig config;
+
+    public RestClient(RestClientConfig config) {
+        this.config = config;
+    }
+
+    public <T> ApiRequestBuilder request(String resourcePath)
+    {
+        return new ApiRequestBuilder<T>(this, resourcePath);
+    }
+
     public <T> CompletableFuture<ApiResponse<T>> execute(String requestMethod,
                                   RestClientConfig config,
                                   String resourcePath,
                                   int expectedSuccessStatusCode,
-                                  List<Pair<String, String>> headers
+                                  List<HttpHeader> headers
 
     ) {
 
         final CompletableFuture<ApiResponse<T>> future = new CompletableFuture<>();
         final String endpoint = config.getBaseUrl() + "/" + resourcePath;
-        final List<Pair<String, String>> requestHeaders = (headers == null) ? new ArrayList<>() : headers;
+        final List<HttpHeader> requestHeaders = (headers == null) ? new ArrayList<>() : headers;
 
         try {
             synchronized (this) {
@@ -65,7 +76,7 @@ public class RestClient implements IHttpRestClient
         return future;
     }
 
-    private void invokeRequestInterceptors(final RestClientConfig config, final String endpoint, final List<Pair<String, String>> headers) throws ApiClientInterceptorException
+    private void invokeRequestInterceptors(final RestClientConfig config, final String endpoint, final List<HttpHeader> headers) throws ApiClientInterceptorException
     {
 
         for (IRequestInterceptor iRequestInterceptor : config.getRequestInterceptors()) {
@@ -73,7 +84,7 @@ public class RestClient implements IHttpRestClient
         }
     }
 
-    private void invokeResponseInterceptors(BufferedReader response, final RestClientConfig config, final String endpoint, final List<Pair<String, String>> headers) throws ApiClientInterceptorException
+    private void invokeResponseInterceptors(BufferedReader response, final RestClientConfig config, final String endpoint, final List<HttpHeader> headers) throws ApiClientInterceptorException
     {
 
         for (IResponseInterceptor iResponseInterceptor : config.getResponseInterceptors()) {

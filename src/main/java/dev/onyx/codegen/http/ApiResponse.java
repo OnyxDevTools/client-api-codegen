@@ -1,6 +1,6 @@
 package dev.onyx.codegen.http;
 
-import dev.onyx.codegen.models.Pair;
+import dev.onyx.codegen.models.HttpHeader;
 
 import java.io.BufferedReader;
 import java.util.List;
@@ -12,7 +12,7 @@ public class ApiResponse<T>
 
     private T body;
 
-    private List<Pair<String, String>> headers;
+    private List<HttpHeader> headers;
     
 
     public ApiResponse(BufferedReader response)
@@ -39,12 +39,12 @@ public class ApiResponse<T>
         this.body = body;
     }
 
-    public List<Pair<String, String>> getHeaders()
+    public List<HttpHeader> getHeaders()
     {
         return headers;
     }
 
-    public void setHeaders(List<Pair<String, String>> headers)
+    public void setHeaders(List<HttpHeader> headers)
     {
         this.headers = headers;
     }

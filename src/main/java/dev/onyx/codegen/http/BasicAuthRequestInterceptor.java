@@ -1,6 +1,6 @@
 package dev.onyx.codegen.http;
 
-import dev.onyx.codegen.models.Pair;
+import dev.onyx.codegen.models.HttpHeader;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
@@ -42,15 +42,15 @@ public class BasicAuthRequestInterceptor implements IRequestInterceptor
         return this;
     }
 
-    protected Pair<String, String> createAuthHeader() throws UnsupportedEncodingException
+    protected HttpHeader<String, String> createAuthHeader() throws UnsupportedEncodingException
     {
         this.creds = (creds != null) ? creds : username + ":" + password;
 
-        return new Pair<>("Authentication", "Basic " + Base64.getEncoder().encodeToString(this.creds.getBytes("utf-8")));
+        return new HttpHeader<>("Authentication", "Basic " + Base64.getEncoder().encodeToString(this.creds.getBytes("utf-8")));
     }
 
     @Override
-    public void execute(RestClientConfig config, String endpoint, List<Pair<String, String>> headers) throws ApiClientInterceptorException {
+    public void execute(RestClientConfig config, String endpoint, List<HttpHeader> headers) throws ApiClientInterceptorException {
         try
         {
             headers.add(this.createAuthHeader());

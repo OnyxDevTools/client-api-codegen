@@ -1,6 +1,6 @@
 package dev.onyx.codegen.http;
 
-import dev.onyx.codegen.models.Pair;
+import dev.onyx.codegen.models.HttpHeader;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -10,7 +10,7 @@ import java.util.List;
 public  class RestClientConnectionFactory
 {
 
-    public static HttpURLConnection connect(RestClientConfig config, String requestMethod, URL url, List<Pair<String, String>> headers) throws ApiClientException
+    public static HttpURLConnection connect(RestClientConfig config, String requestMethod, URL url, List<HttpHeader> headers) throws ApiClientException
     {
         HttpURLConnection conn = null;
 
@@ -20,7 +20,7 @@ public  class RestClientConnectionFactory
             conn.setRequestMethod(requestMethod);
             conn.setReadTimeout(config.getConnectionTimeoutMs());
 
-            for(Pair<String, String> pair : headers)
+            for(HttpHeader<String, String> pair : headers)
             {
                 conn.addRequestProperty(pair.getKey(), pair.getValue());
             }
