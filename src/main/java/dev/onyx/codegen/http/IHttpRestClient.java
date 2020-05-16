@@ -8,10 +8,9 @@ import java.util.concurrent.CompletableFuture;
 
 public interface IHttpRestClient
 {
-    <T> ApiRequestBuilder<T> request(String resourcePath);
+    ApiRequestBuilder request(String resourcePath);
 
     <T> CompletableFuture<ApiResponse<T>> execute(String requestMethod,
-                                                         RestClientConfig config,
                                                          String resourcePath,
                                                          int expectedSuccessStatusCode,
                                                          List<HttpHeader> headers);

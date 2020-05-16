@@ -4,9 +4,11 @@ import dev.onyx.codegen.models.HttpHeader;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
-public class ApiRequestBuilder<T> {
+public class ApiRequestBuilder {
 
     private IHttpRestClient restClient;
 
@@ -59,12 +61,21 @@ public class ApiRequestBuilder<T> {
         return this;
     }
 
-    public ApiResponse<T> get(){
-
+    public <T> ApiResponse<T> get() throws ExecutionException, InterruptedException {
+        //noinspection unchecked
+        return (ApiResponse<T>) restClient.execute("GET", this.resourcePath, this.expectedSuccessStatusCode, this.headers).get();
     }
 
-    public CompletableFuture<ApiResponse> get(Consumer<ApiResponse> onCompletion){
-        restClient.execute()
+    public <T> CompletableFuture<ApiResponse<T>> get(Consumer<ApiResponse<T>> onCompletion){
+        CompletableFuture<ApiResponse<T>> future = restClient.execute("GET", this.resourcePath, this.expectedSuccessStatusCode, this.headers);
+        future.thenAccept(onCompletion);
+        future.exceptionally(throwable -> {
+            // Figure out your exception handling
+            onCompletion.accept(null);
+            return null;
+        });
+
+        return future;
     }
 
 }

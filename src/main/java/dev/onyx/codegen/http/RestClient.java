@@ -21,13 +21,12 @@ public class RestClient implements IHttpRestClient
         this.config = config;
     }
 
-    public <T> ApiRequestBuilder request(String resourcePath)
+    public ApiRequestBuilder request(String resourcePath)
     {
-        return new ApiRequestBuilder<T>(this, resourcePath);
+        return new ApiRequestBuilder(this, resourcePath);
     }
 
     public <T> CompletableFuture<ApiResponse<T>> execute(String requestMethod,
-                                  RestClientConfig config,
                                   String resourcePath,
                                   int expectedSuccessStatusCode,
                                   List<HttpHeader> headers

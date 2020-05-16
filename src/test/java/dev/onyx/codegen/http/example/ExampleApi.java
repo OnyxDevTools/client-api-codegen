@@ -29,7 +29,8 @@ public class ExampleApi
 
     public ApiResponse<Example> getExampleResponseById(final String id, final List<HttpHeader> headers)
     {
-        return restClient.request(MessageFormat.format("example/{0}",id))
+        return restClient
+                .request(MessageFormat.format("example/{0}",id))
                 .headers(headers)
                 .get();
     }
